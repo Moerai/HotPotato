@@ -12,7 +12,8 @@ result1 = soup.select("span.ah_k")
 # result2 = soup.select("span.ah_r") 랭킹순위
 for result in result1[:20]:
     print(result.string)
-
+else:
+    print("Error Code:" + rescode)
 
 # todo list
 #for 구문을 이용해서 반복구문을 제거한다.
