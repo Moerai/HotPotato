@@ -8,9 +8,9 @@ response = urllib.request.urlopen(url)
 
 soup = BeautifulSoup(response, "html.parser")
 
-result1 = soup.select("span.ah_r,span.ah_k")
-# result2 = soup.select("span.ah_k")
-for result in result1:
+result1 = soup.select("span.ah_k")
+# result2 = soup.select("span.ah_r") 랭킹순위
+for result in result1[:20]:
     print(result.string)
 
 
