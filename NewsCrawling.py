@@ -5,11 +5,11 @@ import pandas as pd
 import time
 from pandas import Series, DataFrame
 from bs4 import BeautifulSoup
-#ë„¤ì´ë²„ apiì´ìš© ì•„ì´ë””
+#³×ÀÌ¹ö apiÀÌ¿ë ¾ÆÀÌµð
 request.add_header("X-Naver-Client-Id",client_id)
 request.add_header("X-Naver-Client-Secret",client_secret)
 
-#ë„¤ì´ë²„ ì‹¤ì‹œê°„ ê²€ìƒ‰ì–´ 1ìœ„ë¶€í„° 20ìœ„ê¹Œì§€
+#³×ÀÌ¹ö ½Ç½Ã°£ °Ë»ö¾î 1À§ºÎÅÍ 20À§±îÁö
 
 url_main = "http://naver.com"
 response = urllib.request.urlopen(url_main)
@@ -19,7 +19,7 @@ result1 = soup.select("span.ah_k")
 # for result in result1[:20]:
 #    print(result.string)
 
-#ë„¤ì´ë²„ ì‹¤ì‹œê°„ ê²€ìƒ‰ì–´ì˜ ë‰´ìŠ¤ë°ì´í„° ê°€ì ¸ì˜¤ê¸°
+#³×ÀÌ¹ö ½Ç½Ã°£ °Ë»ö¾îÀÇ ´º½ºµ¥ÀÌÅÍ °¡Á®¿À±â
 for result in result1[:20]:
     encText = urllib.parse.quote(result.string)
     url_news = "https://search.naver.com/search.naver?where=news&sm=tab_jum&query="+ encText
@@ -39,7 +39,7 @@ for result in result1[:20]:
         for link in news_craw:
             try:
                 url_news = link.get('href')
-                #ë”°ì˜´í‘œë‚˜ í°ë”°ì˜´í‘œê°€ ìžˆìœ¼ë©´ ì—†ì• ì¤€ë‹¤.
+                #µû¿ÈÇ¥³ª Å«µû¿ÈÇ¥°¡ ÀÖÀ¸¸é ¾ø¾ÖÁØ´Ù.
                 def dequote(url_news):
                     if(url_news[0]==url_news[-1]) and url_news.startswith(("'",'"')):
                        return url_news[1:-1]
@@ -50,9 +50,11 @@ for result in result1[:20]:
                 soup = BeautifulSoup(response,"html.parser")
                 response = soup.select("p")
                 if(rescode==200):
-                    #píƒœê·¸ ì•ˆì— ìžˆëŠ” ë‚´ìš©ì„ ë³´ì—¬ì¤€ë‹¤.
+                    #pÅÂ±× ¾È¿¡ ÀÖ´Â ³»¿ëÀ» º¸¿©ÁØ´Ù.
                     for result in response:
-                        print(result.string)
+                        if not result.string == None:
+                            if len(result.string)>=50:
+                                print(result.string)
                 else:
                     print("Error Code:" + rescode)
             except urllib.request.HTTPError as inst:

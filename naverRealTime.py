@@ -31,7 +31,7 @@ for result in result1[:20]:
             'a'
         )
         for link in news_craw:
-            print(link.get('href'))
+            print(link.attrs)
         #print(response_body.decode('utf-8'))
     else:
         print("Error Code:" + rescode)
