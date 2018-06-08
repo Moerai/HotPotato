@@ -5,6 +5,7 @@ import pandas as pd
 import time
 from pandas import Series, DataFrame
 from bs4 import BeautifulSoup
+import datetime
 
 request.add_header("X-Naver-Client-Id",client_id)
 request.add_header("X-Naver-Client-Secret",client_secret)
@@ -47,11 +48,17 @@ naverDelList = ['서울연합뉴스', '사진연합뉴스', '이데일리', '플
                 '02)3701-5555', '구독신청:', '대한민국 오후를 여는 유일석간', '문화일보', '모바일 웹', '문화닷컴 바로가기', '▶', '()',  '【', '】', '.."', '[', ']', '©', '  ','데일리안','스페셜경제','기자','일간투데이','MBC 캡처'
                ,'국제뉴스','(청도)']
 
+#호출하는 날짜와 시간
+dt = datetime.datetime.now()
+dt.strftime("%Y%m%d%H%M%S")
 
 #네이버 실시간 검색어의 뉴스데이터 가져오기(인덱스를 조절하여 범위 조절가능) anaconda3\\news\\아래 저장
 #Todo
-#1. 날짜와 시간, 렝킹 순으로 저장하기
 #2. 크롤링시 나오는 애러에 예외처리하기  ex) UnicodeEncodeError... 등
+dt = datetime.datetime.now()
+folTime = dt.strftime("%Y%m%d%H%M%S")
+os.mkdir("C:\\Users\\frien\\Anaconda3\\news\\"+folTime)
+#네이버 실시간 검색어의 뉴스데이터 가져오기
 for result in result1[0:20]:
     encText = urllib.parse.quote(result.string)
     url_news = "https://search.naver.com/search.naver?where=news&sm=tab_jum&query="+ encText
@@ -65,7 +72,7 @@ for result in result1[0:20]:
     rescode = response.getcode()
     print(result.string)
     key = result.string
-    news_save_fuc = "C:\\Users\\frien\\Anaconda3\\news\\"+key+".txt"
+    news_save_fuc = "C:\\Users\\frien\\Anaconda3\\news\\"+folTime+"\\"+key+".txt"
     print(news_save_fuc)
     news_save=open(news_save_fuc,'w',encoding='utf-8')
     news_text = result.string + "\n"
@@ -84,8 +91,11 @@ for result in result1[0:20]:
                        return url_news[1:-1]
                     return url_news
                 request = urllib.request.Request(url_news)
+                sleep(0.1)
                 response = urllib.request.urlopen(request)
+                sleep(0.1)
                 rescode = response.getcode()
+                sleep(0.1)
                 soup = BeautifulSoup(response,"html.parser")
                 response = soup.select("p")
                 #p태그 안에 있는 내용을 보여준다.
@@ -99,10 +109,11 @@ for result in result1[0:20]:
                                     news_all = news_all.replace(i,"")
                             print(news_all)
                             news_text = (news_text + news_all)
-            except urllib.request.HTTPError as inst:
+            except (urllib.request.HTTPError, http.client.IncompleteRead, ConnectionError) as inst:
                 output = format(inst)
                 print(output)
+        news_save.write(news_text)
+        news_save.close()
     else:
         print("Error Code:" + rescode)
-    news_save.write(news_text)
-    news_save.close()
+        news_save.close()
