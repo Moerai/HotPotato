@@ -40,7 +40,6 @@ result1 = soup.select("span.ah_k")
 #         #print(response_body.decode('utf-8'))
 #     else:
 #         print("Error Code:" + rescode)
-
 #크롤링시 불필요한 데이터 삭제 리스트
 delReg = "[\\\\{}<>/!@#$%^&*='_■]"
 naverDelList = ['서울연합뉴스', '사진연합뉴스', '이데일리', '플레이어', '뉴스1코리아', '서울경제', '오류를 우회하기 위한 함수 추가', '본문 내용', '무단 전재 및 재배포 금지', '사진', 'ⓒ', '세계를 보는 창', '경제를 보는 눈', '아시아경제', '무단전재',
@@ -54,7 +53,6 @@ dt.strftime("%Y%m%d%H%M%S")
 
 #네이버 실시간 검색어의 뉴스데이터 가져오기(인덱스를 조절하여 범위 조절가능) anaconda3\\news\\아래 저장
 #Todo
-#2. 크롤링시 나오는 애러에 예외처리하기  ex) UnicodeEncodeError... 등
 dt = datetime.datetime.now()
 folTime = dt.strftime("%Y%m%d%H%M%S")
 os.mkdir("C:\\Users\\frien\\Anaconda3\\news\\"+folTime)
@@ -117,3 +115,4 @@ for result in result1[0:20]:
     else:
         print("Error Code:" + rescode)
         news_save.close()
+        

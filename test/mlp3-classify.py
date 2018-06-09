@@ -4,6 +4,7 @@ from keras.wrappers.scikit_learn import KerasClassifier
 from keras.utils import np_utils
 from sklearn.model_selection import train_test_split
 from sklearn import model_selection, metrics
+import numpy as np #numpy의 array라고 알려주면서 value error를 방지한다.
 import json
 max_words = 56681 # 입력 단어 수: word-dic.json 파일 참고
 nb_classes = 6 # 6개의 카테고리
@@ -22,7 +23,7 @@ def build_model():
         metrics=['accuracy'])
     return model
 # 데이터 읽어 들이기--- (※2)
-data = json.load(open("./newstext/data-mini.json"))
+data = json.load(open("./newstext/data-mini.json")) #데이터 파일은 용량이 커서 올리지 않음...
 #data = json.load(open("./newstext/data.json"))
 X = data["X"] # 텍스트를 나타내는 데이터
 Y = data["Y"] # 카테고리 데이터
@@ -34,10 +35,12 @@ model = KerasClassifier(
     build_fn=build_model,
     nb_epoch=nb_epoch,
     batch_size=batch_size)
-model.fit(X_train, Y_train)
+model.fit(np.array(X_train), np.array(Y_train))
 # 예측하기 --- (※4)
-y = model.predict(X_test)
+y = model.predict(np.array(X_test))
 ac_score = metrics.accuracy_score(Y_test, y)
 cl_report = metrics.classification_report(Y_test, y)
 print("정답률 =", ac_score)
 print("리포트 =\n", cl_report)
+
+#출처 윤인성님의 머신러닝 딥러닝 실전개발입문 (에러가 나서 수정을 좀 했다...)
