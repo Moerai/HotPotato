@@ -7,6 +7,12 @@ from keras.optimizers import RMSprop
 from keras.utils.data_utils import get_file
 import numpy as np
 import random, sys
+import tensorflow as tf
+#GPU 메모리 오류가 나서 고쳐주는 부분
+# Assume that you have 12GB of GPU memory and want to allocate ~4GB:
+gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.333)
+sess = tf.Session(config=tf.ConfigProto(gpu_options=gpu_options))
+
 fp = codecs.open("./BEXX0003.txt", "r", encoding="utf-16")
 soup = BeautifulSoup(fp, "html.parser")
 body = soup.select_one("body")
@@ -54,7 +60,7 @@ for iteration in range(1, 60):
     print()
     print('-' * 50)
     print('반복 =', iteration)
-    model.fit(X, y, batch_size=128, nb_epoch=1) #
+    model.fit(np.array(X), np.array(y), batch_size=128, nb_epoch=1) #
     # 임의의 시작 텍스트 선택하기
     start_index = random.randint(0, len(text) - maxlen - 1)
     # 다양한 다양성의 문장 생성
