@@ -1,0 +1,16 @@
+{
+  "name": "node-sample",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "toto",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "build":"electron-packager . --out=dist --asar --overwite --platform=win32 "
+  },
+  "dependencies": {
+    "electron": "^2.0.0",
+    "electron-packager": "^12.0.2"
+  }
+}
+ 
